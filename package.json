@@ -1,0 +1,23 @@
+{
+  "name": "com.lg.webos",
+  "version": "1.0.0",
+  "description": "WebOS for Homey",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://WeeJeWel@github.com/athombv/com.lg.webos.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/athombv/com.lg.webos/issues"
+  },
+  "homepage": "https://github.com/athombv/com.lg.webos#readme",
+  "dependencies": {
+    "webos": "^1.0.0"
+  },
+  "devDependencies": {}
+}

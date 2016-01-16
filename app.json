@@ -1,0 +1,64 @@
+{
+	"id": "com.lg.webos",
+	"version": "0.0.1",
+	"name": {
+		"en": "LG webOS"
+	},
+	"description": {
+		"en": "Control your LG webOS TV"
+	},
+	"category": "video",
+	"compatibility": "0.x || 1.x",
+	"images": {
+		"large": "./assets/images/large.jpg",
+		"small": "./assets/images/small.jpg"
+	},
+	"drivers": [
+		{
+			"id": "tv",
+			"class": "tv",
+			"capabilities": [ "onoff", "channel", "volume_setpoint" ],
+			"name": {
+				"en": "LG webOS TV"
+			},
+			"pair": [
+		        {
+		            "id": "list_devices",
+		            "template": "list_devices",
+		            "navigation": {
+		                "next": "accept_and_add"
+		            }
+		        },
+		        {
+		            "id": "accept_and_add"
+		        }
+		    ]
+		}
+	],
+	"flow": {
+		"actions": [
+			{
+				"id": "set_channel",
+				"title": {
+					"en": "Set TV to channel"
+				},
+				"args": [
+					{
+						"name": "tv",
+						"placeholder": {
+							"en": "Television"
+						},
+						"type": "device"
+					},
+					{
+						"name": "channel",
+						"placeholder": {
+							"en": "Channel"
+						},
+						"type": "autocomplete"
+					}
+				]
+			}
+		]
+	}
+}
