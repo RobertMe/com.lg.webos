@@ -17,7 +17,7 @@
   },
   "homepage": "https://github.com/athombv/com.lg.webos#readme",
   "dependencies": {
-    "webos": "^1.0.0"
+    "webos": "^1.0.1"
   },
   "devDependencies": {}
 }
