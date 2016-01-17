@@ -21,6 +21,10 @@
 			"name": {
 				"en": "LG webOS TV"
 			},
+			"images": {
+				"large": "./drivers/tv/assets/images/large.jpg",
+				"small": "./drivers/tv/assets/images/small.jpg"
+			},
 			"pair": [
 		        {
 		            "id": "list_devices",
