@@ -1,6 +1,6 @@
 {
   "name": "com.lg.webos",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "WebOS for Homey",
   "main": "app.js",
   "scripts": {
