@@ -63,7 +63,10 @@ var self = module.exports = {
 				
 				module.exports.setUnavailable( device.data, "Offline" );
 				
-				connectToDevice( deviceObj, device.data );
+				connectToDevice( deviceObj, device.data, function( err, tv ){
+					if( err ) return Homey.error(err);
+					tv.showFloat( "This TV is now connected to Homey!" );
+				});
 				
 				callback( null, true );
 				
@@ -74,7 +77,9 @@ var self = module.exports = {
 	
 }
 
-function connectToDevice( device, device_data ) {
+function connectToDevice( device, device_data, callback ) {
+	
+	callback = callback || function(){}
 				
 	// map uuid to IP
 	var ip = false;
@@ -84,14 +89,15 @@ function connectToDevice( device, device_data ) {
 	
 	if( ip ) {
 		
-		Homey.app.tvs[ device_data.id ] = new webos.Remote()
+		var tv = Homey.app.tvs[ device_data.id ] = new webos.Remote()
 		
 		Homey.app.tvs[ device_data.id ].connect({
 			address	: device.address,
 			key		: device_data.key
 		}, function( err, result ){
-			if( err ) return console.error( err );
-			module.exports.setAvailable( device_data );						
+			if( err ) return callback( err );
+			module.exports.setAvailable( device_data );	
+			callback( null, tv );								
 		});
 		
 	}

@@ -3,15 +3,11 @@
 <script type="text/javascript">
 var selectedDeviceObj = window.found_devices[ window.selected_devices[0] ];
 		
-console.log('selectedDeviceObj', selectedDeviceObj)
-
 Homey.emit('handshake', selectedDeviceObj, function( err, key ){
 	if( err ) return alert(err);
 	
 	selectedDeviceObj.data.key = key;
-	
-	console.log('selectedDeviceObj', selectedDeviceObj)
-	
+		
 	Homey.addDevice(selectedDeviceObj, function( err, result ){
 		if( err ) return alert(err);
 		

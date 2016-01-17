@@ -46,7 +46,7 @@
 					{
 						"name": "tv",
 						"placeholder": {
-							"en": "Television"
+							"en": "TV"
 						},
 						"type": "device"
 					},
@@ -56,6 +56,119 @@
 							"en": "Channel"
 						},
 						"type": "autocomplete"
+					}
+				]
+			},
+			{
+				"id": "set_input",
+				"title": {
+					"en": "Set TV input"
+				},
+				"args": [
+					{
+						"name": "tv",
+						"placeholder": {
+							"en": "TV"
+						},
+						"type": "device"
+					},
+					{
+						"name": "input",
+						"placeholder": {
+							"en": "Input"
+						},
+						"type": "autocomplete"
+					}
+				]
+			},
+			{
+				"id": "set_volume",
+				"title": {
+					"en": "Set TV volume"
+				},
+				"args": [
+					{
+						"name": "tv",
+						"placeholder": {
+							"en": "TV"
+						},
+						"type": "device"
+					},
+					{
+						"name": "volume",
+						"type": "range",
+						"min": 0,
+						"max": 100,
+						"step": 1,
+						"label": "%"
+					}
+				]
+			},
+			{
+				"id": "set_mute_true",
+				"title": {
+					"en": "Mute TV volume"
+				},
+				"args": [
+					{
+						"name": "tv",
+						"placeholder": {
+							"en": "TV"
+						},
+						"type": "device"
+					}
+				]
+			},
+			{
+				"id": "set_mute_false",
+				"title": {
+					"en": "Unmute TV volume"
+				},
+				"args": [
+					{
+						"name": "tv",
+						"placeholder": {
+							"en": "TV"
+						},
+						"type": "device"
+					}
+				]
+			},
+			{
+				"id": "show_float",
+				"title": {
+					"en": "Show a message on the TV"
+				},
+				"args": [
+					{
+						"name": "tv",
+						"placeholder": {
+							"en": "TV"
+						},
+						"type": "device"
+					},
+					{
+						"name": "message",
+						"type": "text",
+						"placeholder": {
+							"en": "Your message..."
+						},
+						"type": "text"
+					}
+				]
+			},
+			{
+				"id": "poweroff",
+				"title": {
+					"en": "Turn the TV off"
+				},
+				"args": [
+					{
+						"name": "tv",
+						"placeholder": {
+							"en": "TV"
+						},
+						"type": "device"
 					}
 				]
 			}
