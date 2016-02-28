@@ -11,10 +11,14 @@ var self = module.exports = {
 		
 		self.scanner = new webos.Scanner();		
 		self.scanner.on('device', function(device){
-			Homey.log('Found device', device.uuid, device.address)
+			Homey.log('Found device', device.friendlyName, device.address)
 			self.devices.push(device);
-		})	
+		})
 		self.scanner.startScanning();
+		
+		setInterval(function(){
+			self.scanner.startScanning();
+		}, 10000);
 				
 		Homey.log("LG webOS for Homey is ready!");
 		
@@ -27,7 +31,10 @@ var self = module.exports = {
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );	
 			
-			tv.setChannel( args.channel.id, callback );
+			tv.setChannel( args.channel.id, function(err, result){
+				if( err ) return callback(err);
+				return callback( null, result.returnValue );
+			});
 			
 		});
 		
@@ -66,7 +73,10 @@ var self = module.exports = {
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );	
 			
-			tv.setInput( args.input.id, callback );
+			tv.setInput( args.input.id, function(err, result){
+				if( err ) return callback(err);
+				return callback( null, result.returnValue );
+			});
 			
 		});
 		
@@ -105,7 +115,10 @@ var self = module.exports = {
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );	
 			
-			tv.setVolume( args.volume, callback );
+			tv.setVolume( args.volume, function(err, result){
+				if( err ) return callback(err);
+				return callback( null, result.returnValue );
+			});
 			
 		});
 				
@@ -114,7 +127,10 @@ var self = module.exports = {
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );	
 			
-			tv.setMute( true, callback );
+			tv.setMute( true, function(err, result){
+				if( err ) return callback(err);
+				return callback( null, result.returnValue );
+			});
 			
 		});
 				
@@ -123,7 +139,10 @@ var self = module.exports = {
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );	
 			
-			tv.setMute( false, callback );
+			tv.setMute( false, function(err, result){
+				if( err ) return callback(err);
+				return callback( null, result.returnValue );
+			});
 			
 		});
 		
@@ -136,7 +155,10 @@ var self = module.exports = {
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );	
 						
-			tv.showFloat( args.message, callback );
+			tv.showFloat( args.message, function(err, result){
+				if( err ) return callback(err);
+				return callback( null, result.returnValue );
+			});
 			
 		});
 				
@@ -145,7 +167,10 @@ var self = module.exports = {
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );	
 			
-			tv.turnOff( callback );
+			tv.turnOff( function(err, result){
+				if( err ) return callback(err);
+				return callback( null, result.returnValue );
+			});
 			
 		});
 				

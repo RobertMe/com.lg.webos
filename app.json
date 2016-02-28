@@ -52,7 +52,8 @@
 						"placeholder": {
 							"en": "TV"
 						},
-						"type": "device"
+						"type": "device",
+						"filter": "driver_id=tv"
 					},
 					{
 						"name": "channel",
@@ -74,7 +75,8 @@
 						"placeholder": {
 							"en": "TV"
 						},
-						"type": "device"
+						"type": "device",
+						"filter": "driver_id=tv"
 					},
 					{
 						"name": "input",
@@ -96,7 +98,8 @@
 						"placeholder": {
 							"en": "TV"
 						},
-						"type": "device"
+						"type": "device",
+						"filter": "driver_id=tv"
 					},
 					{
 						"name": "volume",
@@ -119,7 +122,8 @@
 						"placeholder": {
 							"en": "TV"
 						},
-						"type": "device"
+						"type": "device",
+						"filter": "driver_id=tv"
 					}
 				]
 			},
@@ -134,7 +138,8 @@
 						"placeholder": {
 							"en": "TV"
 						},
-						"type": "device"
+						"type": "device",
+						"filter": "driver_id=tv"
 					}
 				]
 			},
@@ -149,7 +154,8 @@
 						"placeholder": {
 							"en": "TV"
 						},
-						"type": "device"
+						"type": "device",
+						"filter": "driver_id=tv"
 					},
 					{
 						"name": "message",
@@ -172,7 +178,8 @@
 						"placeholder": {
 							"en": "TV"
 						},
-						"type": "device"
+						"type": "device",
+						"filter": "driver_id=tv"
 					}
 				]
 			}

@@ -58,7 +58,7 @@ var self = module.exports = {
 				
 				var deviceObj = false;
 				Homey.app.devices.forEach(function(device_){
-					if( device_.uuid == device.data.id ) deviceObj = device_;
+					if( device_.friendlyName == device.data.id ) deviceObj = device_;
 				})
 				
 				module.exports.setUnavailable( device.data, "Offline" );
@@ -79,12 +79,14 @@ var self = module.exports = {
 
 function connectToDevice( device, device_data, callback ) {
 	
+	Homey.log("connectToDevice", device, device_data);
+	
 	callback = callback || function(){}
 				
-	// map uuid to IP
+	// map friendlyName to IP
 	var ip = false;
 	Homey.app.devices.forEach(function(device_){
-		if( device_.uuid == device_data.id ) ip = device_.address;
+		if( device_.friendlyName == device_data.id ) ip = device_.address;
 	})
 	
 	if( ip ) {
@@ -97,6 +99,35 @@ function connectToDevice( device, device_data, callback ) {
 		}, function( err, result ){
 			if( err ) return callback( err );
 			module.exports.setAvailable( device_data );	
+			
+			Homey.app.tvs[ device_data.id ].on('disconnect', function(){
+				Homey.log("TV Disconnected");
+				module.exports.setUnavailable( device_data, "Offline" );
+			
+				Homey.log("Starting reconnect interval...");
+				(function reconnect(){
+					Homey.log('Reconnecting...')
+					
+					// check if not deleted
+					if( Homey.app.tvs[ device_data.id ] ) {
+						
+						// check if not connected
+						if( !Homey.app.tvs[ device_data.id ].connected ) {
+							
+							connectToDevice( device, device_data, function( err, result ){
+								if( err ) return setTimeout(function(){
+									reconnect();
+								}, 5000);
+								
+								Homey.log("Reconnected!");
+								module.exports.setAvailable( device_data );
+							});
+						}
+					}
+				})();
+				
+			})
+			
 			callback( null, tv );								
 		});
 		
@@ -106,9 +137,9 @@ function connectToDevice( device, device_data, callback ) {
 
 function formatDevice( device ) {
 	return {
-		name: 'LG webOS (' + device.uuid + ')',
+		name: device.friendlyName,
 		data: {
-			id: device.uuid,
+			id: device.friendlyName,
 			ip: device.address
 		}
 	}
