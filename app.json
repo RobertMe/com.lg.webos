@@ -1,6 +1,6 @@
 {
 	"id": "com.lg.webos",
-	"version": "0.9.0",
+	"version": "0.9.1",
 	"name": {
 		"en": "LG webOS"
 	},
@@ -17,7 +17,7 @@
 		{
 			"id": "tv",
 			"class": "tv",
-			"capabilities": [ "onoff", "channel", "volume_setpoint" ],
+			"capabilities": [],
 			"name": {
 				"en": "LG webOS TV"
 			},
