@@ -91,41 +91,25 @@ function connectToDevice( device, device_data, callback ) {
 
 	if( ip ) {
 
-		var tv = Homey.app.tvs[ device_data.id ] = new webos.Remote()
+		var tv = Homey.app.tvs[ device_data.id ] = new webos.Remote({
+			reconnectFromStart	: true,
+			address				: device.address,
+			key					: device_data.key,
+			debug				: false
+		})
 
-		Homey.app.tvs[ device_data.id ].connect({
-			address	: device.address,
-			key		: device_data.key
-		}, function( err, result ){
+		Homey.app.tvs[ device_data.id ].connect({}, function( err, result ){
 			if( err ) return callback( err );
 			module.exports.setAvailable( device_data );
 
 			Homey.app.tvs[ device_data.id ].on('disconnect', function(){
 				Homey.log("TV Disconnected");
 				module.exports.setUnavailable( device_data, "Offline" );
+			})
 
-				Homey.log("Starting reconnect interval...");
-				(function reconnect(){
-					Homey.log('Reconnecting...')
-
-					// check if not deleted
-					if( Homey.app.tvs[ device_data.id ] ) {
-
-						// check if not connected
-						if( !Homey.app.tvs[ device_data.id ].connected ) {
-
-							connectToDevice( device, device_data, function( err, result ){
-								if( err ) return setTimeout(function(){
-									reconnect();
-								}, 5000);
-
-								Homey.log("Reconnected!");
-								module.exports.setAvailable( device_data );
-							});
-						}
-					}
-				})();
-
+			Homey.app.tvs[ device_data.id ].on('reconnect', function(){
+				Homey.log("TV Reconnected");
+				module.exports.setAvailable( device_data );
 			})
 
 			callback( null, tv );
