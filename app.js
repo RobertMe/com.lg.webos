@@ -142,6 +142,28 @@ var self = module.exports = {
 		*/
 
 		Homey.manager('flow').on('action.show_float', function( callback, args ){
+
+  retrieveTV : function ( id, callback ){
+    var tv = self.tvs[id];
+    var deviceObj = self.devices[id];
+
+    if ( typeof tv != 'undefined' ) {
+      return callback( null, tv );
+    }
+
+    if ( typeof deviceObj == 'undefined' ) {
+      return callback( "TV not connected" );
+    }
+
+    if ( deviceObj ) {
+      self.connectToDevice( deviceObj, function ( err, tv ){
+        if ( err ) return callback( "TV not connected" );
+
+        return callback( null, tv );
+      })
+    }
+  },
+
   connectToDevice: function( device, callback ) {
     callback = callback || function(){}
 
