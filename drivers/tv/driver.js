@@ -32,7 +32,7 @@ var self = module.exports = {
 
 				// when a new device has been found
 				Homey.app.scanner.on('device', function(device){
-				    socket.emit('list_devices', [ formatDevice(device) ])
+						socket.emit('list_devices', [ formatDevice(device) ])
 				})
 
 			})
@@ -40,7 +40,7 @@ var self = module.exports = {
 
 				var remote = new webos.Remote();
 					remote.connect({
-					    address : device.data.ip
+							address : device.data.ip
 					}, callback)
 
 			})
