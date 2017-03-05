@@ -142,7 +142,42 @@ var self = module.exports = {
 		*/
 
 		Homey.manager('flow').on('action.show_float', function( callback, args ){
+  connectToDevice: function( device, callback ) {
+    callback = callback || function(){}
 
+    var tv = new webos.Remote({
+      reconnectFromStart	: true,
+      address		  : device.ip,
+      key					: device.key,
+      debug				: false
+    })
+
+    var timeId = setTimeout(function () {
+      return callback ( 'Timeout', null );
+    }, 2000);
+
+    tv.connect({}, function( err, result ){
+
+      clearTimeout(timeId);
+
+      if( err ) return callback( err );
+
+      tv.on('disconnect', function(){
+        self.tvs[ device.id ] = undefined;
+        Homey.log("TV Disconnected");
+      })
+
+      tv.on('reconnect', function(){
+        self.tvs[ device.id ] = tv;
+        Homey.log("TV Reconnected");
+      })
+
+      Homey.log('TV (connected) ');
+      self.tvs[ device.id ] = tv;
+      callback( null, tv );
+    });
+  }
+}
 			var tv = self.tvs[ args.tv.id ];
 			if( typeof tv == 'undefined' ) return callback( "TV not connected" );
 
