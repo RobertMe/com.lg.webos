@@ -7,17 +7,7 @@ var self = module.exports = {
 	init: function( devices_data, callback ) {
 
 		devices_data.forEach(function(device_data){
-			module.exports.setUnavailable( device_data, "Offline" );
-		})
-
-		Homey.app.scanner.on('device', function(device){
-
-			devices_data.forEach(function(device_data){
-
-				connectToDevice( device, device_data );
-
-			});
-
+			Homey.app.devices[device_data.id] = device_data;
 		})
 
 		callback( true );

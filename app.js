@@ -6,19 +6,10 @@ var self = module.exports = {
 
 	init: function() {
 
+    // List of online TV's
 		self.tvs = {};
-		self.devices = [];
-
-		self.scanner = new webos.Scanner();
-		self.scanner.on('device', function(device){
-			Homey.log('Found device', device.friendlyName, device.address)
-			self.devices.push(device);
-		})
-		self.scanner.startScanning();
-
-		setInterval(function(){
-			self.scanner.startScanning();
-		}, 10000);
+		// List of paired devices
+		self.devices = {}
 
 		Homey.log("LG webOS for Homey is ready!");
 
