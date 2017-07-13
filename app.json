@@ -1,5 +1,6 @@
 {
 	"id": "com.lg.webos",
+	"sdk": 2,
 	"version": "1.0.0",
 	"name": {
 		"en": "LG webOS"
@@ -8,7 +9,7 @@
 		"en": "Control your LG webOS TV"
 	},
 	"category": "video",
-	"compatibility": "0.x || 1.x",
+	"compatibility": ">=1.5.0",
 	"images": {
 		"large": "./assets/images/large.jpg",
 		"small": "./assets/images/small.jpg"
@@ -31,6 +32,9 @@
 		            "template": "list_devices",
 		            "navigation": {
 		                "next": "accept_and_add"
+		            },
+		            "options": {
+			            "singular": true
 		            }
 		        },
 		        {

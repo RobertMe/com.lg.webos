@@ -1,69 +1,76 @@
-"use strict";
+'use strict';
 
-var webos		= require('webos');
+const webos = require('webos');
+const Homey = require('homey');
 
-var self = module.exports = {
-
-	init: function( devices_data, callback ) {
-
-		devices_data.forEach(function(device_data){
-			Homey.app.devices[device_data.id] = device_data;
-		})
-
-		callback( true );
-	},
-
-	deleted: function( device_data ) {
-
-		var tv = Homey.app.tvs[ device_data.id ];
-		if( tv ) {
-			tv.disconnect();
-		}
-
-		delete Homey.app.tvs[ device_data.id ];
-	},
-
-	pair: function( socket ) {
-
-		socket
-			.on('list_devices', function( data, callback ){
-
-				callback( null, Homey.app.devices.map(formatDevice) );
-
-				// when a new device has been found
-				Homey.app.scanner.on('device', function(device){
-						socket.emit('list_devices', [ formatDevice(device) ])
-				})
-
-			})
-			.on('handshake', function( device, callback ){
-
-				var remote = new webos.Remote();
-					remote.connect({
-							address : device.data.ip
-					}, callback)
-
-			})
-			.on('add_device', function( device, callback ){
-
-				Homey.app.connectToDevice( device.data, function( err, tv ){
-					if( err ) return Homey.error(err);
-					tv.showFloat( "This TV is now connected to Homey!" );
-				});
-
-				callback( null, true );
-
-			})
-	},
-
-}
-
-function formatDevice( device ) {
-	return {
-		name: device.friendlyName,
-		data: {
-			id: device.friendlyName,
-			ip: device.address
-		}
+class LGWebOSDriver extends Homey.Driver {
+	
+	onInit() {
+		
+		this._discovery = new webos.WebOSDiscovery();
+		this._discovery.start();
+		this._discovery.on('device', device => {
+			this.log('Device found:', device.getOpt('name'), '@', device.getOpt('address'));
+			this.emit('_device', device);
+		});
+		
 	}
+	
+	getWebOSDevice( id ) {
+		return new Promise(( resolve, reject ) => {
+			
+			let device = this._discovery.getDevice('id');
+			if( device instanceof webos.WebOSDevice ) return resolve( device );
+			if( device instanceof Error ) return this.on('_device', device => {
+				if( device.getOpt('id') === id ) return resolve( device );
+			});
+			
+		});
+	}
+	
+	onPair( socket ) {
+		
+		socket.on('list_devices', ( data, callback ) => {
+			
+			let devicesArr = [];
+			let devicesObj = this._discovery.getDevices();
+			
+			for( let id in devicesObj ) {
+				let device = devicesObj[id];
+				
+				devicesArr.push({
+					data: {
+						id: device.getOpt('id')
+					},
+					name: device.getOpt('name')
+				})
+			}
+			
+			callback( null, devicesArr );
+			
+		});
+		
+		socket.on('handshake', ( deviceId, callback ) => {
+			
+			let device = this._discovery.getDevice( deviceId );
+			if( device instanceof Error ) return callback( device );
+			
+			device.once('key', key => {
+				this.log('Got key:', key);
+				callback( null, key );				
+			})
+			
+			device
+				.createToast( Homey.__('pair_success') )
+				.catch( err => {
+					this.error( err );
+					callback( err );
+				});
+			
+		});
+		
+	}
+	
 }
+
+module.exports = LGWebOSDriver;
