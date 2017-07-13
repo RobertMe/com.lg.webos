@@ -16,9 +16,7 @@ class LGWebOSDevice extends Homey.Device {
 				this._device = device;
 				//this._device.setOpt( 'debug', true );
 				this._device.setOpt( 'key', this.getStoreValue('key') );
-				
-				this.log('Available');
-				
+								
 				this.setCapabilityValue('onoff', true);
 				
 				// get initial volume
@@ -37,9 +35,27 @@ class LGWebOSDevice extends Homey.Device {
 		
 	}
 	
+	onDeleted() {
+		if( this._device ) {		
+			this._device.setOpt( 'key', undefined );
+		}
+	}
+	
+	getWebOSDevice() {
+		
+		if( this.getCapabilityValue('onoff') !== true )
+			return new Error('TV Offline');
+			
+		return this._device || new Error('TV Offline');
+	}
+	
 	_onCapabilityOnoff( value, opts ) {
 		this.log('_onCapabilityOnoff', value);
-		return Promise.resolve();
+		
+		let signal = this._driver.getWebOSSignal();
+		if( signal instanceof Error ) return Promise.reject( signal );
+		
+		return signal.cmd( ( value ) ? 'power_on' : 'power_off' );
 	}
 	
 	_onCapabilityVolumeSet( value, opts ) {
