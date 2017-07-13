@@ -19,7 +19,7 @@ class LGWebOSDriver extends Homey.Driver {
 	getWebOSDevice( id ) {
 		return new Promise(( resolve, reject ) => {
 			
-			let device = this._discovery.getDevice('id');
+			let device = this._discovery.getDevice( id );
 			if( device instanceof webos.WebOSDevice ) return resolve( device );
 			if( device instanceof Error ) return this.on('_device', device => {
 				if( device.getOpt('id') === id ) return resolve( device );

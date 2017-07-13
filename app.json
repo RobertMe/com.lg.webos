@@ -18,7 +18,7 @@
 		{
 			"id": "tv",
 			"class": "tv",
-			"capabilities": [],
+			"capabilities": [ "onoff", "volume_set", "volume_mute" ],
 			"name": {
 				"en": "LG webOS TV"
 			},
