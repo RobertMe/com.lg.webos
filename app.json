@@ -1,5 +1,6 @@
 {
 	"id": "com.lg.webos",
+	"sdk": 2,
 	"version": "1.0.0",
 	"name": {
 		"en": "LG webOS"
@@ -8,16 +9,17 @@
 		"en": "Control your LG webOS TV"
 	},
 	"category": "video",
-	"compatibility": "0.x || 1.x",
+	"compatibility": ">=1.5.0",
 	"images": {
 		"large": "./assets/images/large.jpg",
 		"small": "./assets/images/small.jpg"
 	},
+	"permissions": [ "homey:wireless:ir" ],
 	"drivers": [
 		{
-			"id": "tv",
+			"id": "webos",
 			"class": "tv",
-			"capabilities": [],
+			"capabilities": [ "onoff", "volume_set", "volume_mute" ],
 			"name": {
 				"en": "LG webOS TV"
 			},
@@ -31,6 +33,9 @@
 		            "template": "list_devices",
 		            "navigation": {
 		                "next": "accept_and_add"
+		            },
+		            "options": {
+			            "singular": true
 		            }
 		        },
 		        {
@@ -53,7 +58,7 @@
 							"en": "TV"
 						},
 						"type": "device",
-						"filter": "driver_id=tv"
+						"filter": "driver_id=webos"
 					},
 					{
 						"name": "channel",
@@ -76,7 +81,7 @@
 							"en": "TV"
 						},
 						"type": "device",
-						"filter": "driver_id=tv"
+						"filter": "driver_id=webos"
 					},
 					{
 						"name": "input",
@@ -84,62 +89,6 @@
 							"en": "Input"
 						},
 						"type": "autocomplete"
-					}
-				]
-			},
-			{
-				"id": "set_volume",
-				"title": {
-					"en": "Set TV volume"
-				},
-				"args": [
-					{
-						"name": "tv",
-						"placeholder": {
-							"en": "TV"
-						},
-						"type": "device",
-						"filter": "driver_id=tv"
-					},
-					{
-						"name": "volume",
-						"type": "range",
-						"min": 0,
-						"max": 100,
-						"step": 1,
-						"label": "%"
-					}
-				]
-			},
-			{
-				"id": "set_mute_true",
-				"title": {
-					"en": "Mute TV volume"
-				},
-				"args": [
-					{
-						"name": "tv",
-						"placeholder": {
-							"en": "TV"
-						},
-						"type": "device",
-						"filter": "driver_id=tv"
-					}
-				]
-			},
-			{
-				"id": "set_mute_false",
-				"title": {
-					"en": "Unmute TV volume"
-				},
-				"args": [
-					{
-						"name": "tv",
-						"placeholder": {
-							"en": "TV"
-						},
-						"type": "device",
-						"filter": "driver_id=tv"
 					}
 				]
 			},
@@ -155,7 +104,7 @@
 							"en": "TV"
 						},
 						"type": "device",
-						"filter": "driver_id=tv"
+						"filter": "driver_id=webos"
 					},
 					{
 						"name": "message",
@@ -166,23 +115,18 @@
 						"type": "text"
 					}
 				]
-			},
-			{
-				"id": "poweroff",
-				"title": {
-					"en": "Turn the TV off"
-				},
-				"args": [
-					{
-						"name": "tv",
-						"placeholder": {
-							"en": "TV"
-						},
-						"type": "device",
-						"filter": "driver_id=tv"
-					}
-				]
 			}
 		]
+	},
+	"signals": {
+		"ir": {
+			"lg": {
+				"type": "prontohex",
+				"cmds": {
+					"power_on": "0000 006d 0022 0002 0157 00ac 0015 0016 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0689 0157 0056 0015 0e94",
+					"power_off": "0000 006d 0022 0002 0157 00ac 0015 0016 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0041 0015 0016 0015 0016 0015 0016 0015 0041 0015 0041 0015 0041 0015 0041 0015 0016 0015 0041 0015 0041 0015 0041 0015 0016 0015 0016 0015 0689 0157 0056 0015 0e94"
+				}
+			}
+		}
 	}
 }

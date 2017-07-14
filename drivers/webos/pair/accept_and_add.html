@@ -3,13 +3,17 @@
 <script type="text/javascript">
 var selectedDeviceObj = window.found_devices[ window.selected_devices[0] ];
 		
-Homey.emit('handshake', selectedDeviceObj, function( err, key ){
-	if( err ) return alert(err);
+Homey.emit('handshake', selectedDeviceObj.data.id, function( err, key ){
+	if( err ) return Homey.alert(err.message || err.toString(), 'error', function(){
+		Homey.done();		
+	});
 	
-	selectedDeviceObj.data.key = key;
+	selectedDeviceObj.store = {
+		key: key
+	};
 		
 	Homey.addDevice(selectedDeviceObj, function( err, result ){
-		if( err ) return alert(err);
+		if( err ) return Homey.alert(err);
 		
 		Homey.emit('add_device', selectedDeviceObj, function(){
 			Homey.done();			
