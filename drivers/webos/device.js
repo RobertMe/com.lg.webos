@@ -42,11 +42,17 @@ class LGWebOSDevice extends Homey.Device {
 	}
 	
 	getWebOSDevice() {
-		
+				
 		if( this.getCapabilityValue('onoff') !== true )
 			return new Error('TV Offline');
 			
 		return this._device || new Error('TV Offline');
+	}
+	
+	getWebOSDeviceAsync() {
+		let device = this.getWebOSDevice();
+		if( device instanceof Error ) return Promise.reject( device );
+		return Promise.resolve( device );
 	}
 	
 	_onCapabilityOnoff( value, opts ) {

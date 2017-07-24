@@ -35,88 +35,78 @@ class LGWebOSDriver extends Homey.Driver {
 		
 		new Homey.FlowCardAction('set_channel')
 			.register()
-			.on('run', ( args, state, callback ) => {
+			.registerRunListener('run', ( args, state ) => {
 				
-				let device = args.tv.getWebOSDevice();
-				if( device instanceof Error ) return callback( device );
+				return args.tv
+					.getWebOSDeviceAsync()
+					.then( device => {
+						return device.setChannel( args.channel.id );
+					});
 				
-				device.setChannel( args.channel.id )
-					.then( res => {
-						callback( null, true );
-					})
-					.catch( callback );
 			})
 			.getArgument('channel')
-			.on('autocomplete', ( query, args, callback ) => {
+			.registerAutocompleteListener( ( query, args ) => {
 				
-				let device = args.tv.getWebOSDevice();
-				if( device instanceof Error ) return callback( device );
+				return args.tv
+					.getWebOSDeviceAsync()
+					.then( device => {
 				
-				device.getChannels()
-					.then( channels => {
-						channels = channels.map( channel => {
-							return {
-								name: channel.number + '. ' + channel.name,
-								id: channel.id
-							}
-						}).filter( channel => {
-							return channel.name.toLowerCase().indexOf( query.toLowerCase() ) > -1;
-						})
-												
-						callback( null, channels );
-					})
-					.catch( callback );
+						return device.getChannels()
+							.then( channels => {
+								return channels.map( channel => {
+									return {
+										name: channel.number + '. ' + channel.name,
+										id: channel.id
+									}
+								}).filter( channel => {
+									return channel.name.toLowerCase().indexOf( query.toLowerCase() ) > -1;
+								})
+							})
+					});
 			});
 		
 		new Homey.FlowCardAction('set_input')
 			.register()
-			.on('run', ( args, state, callback ) => {
+			.registerRunListener( ( args, state ) => {
 				
-				let device = args.tv.getWebOSDevice();
-				if( device instanceof Error ) return callback( device );
-				
-				device.setInput( args.input.id )
-					.then( res => {
-						callback( null, true );
-					})
-					.catch( callback );
+				return args.tv
+					.getWebOSDeviceAsync()
+					.then( device => {
+						return device.setInput( args.input.id );
+					});
+					
 			})
 			.getArgument('input')
-			.on('autocomplete', ( query, args, callback ) => {
+			.registerAutocompleteListener( ( query, args ) => {
 				
-				let device = args.tv.getWebOSDevice();
-				if( device instanceof Error ) return callback( device );
-				
-				device.getInputs()
-					.then( inputs => {
-												
-						inputs = inputs.map( input => {
-							return {
-								name: input.label,
-								image: input.icon,
-								id: input.id
-							}
-						}).filter( input => {
-							return input.name.toLowerCase().indexOf( query.toLowerCase() ) > -1;
-						})
-												
-						callback( null, inputs );
-					})
-					.catch( callback );
+				return args.tv
+					.getWebOSDeviceAsync()
+					.then( device => {
+						return device.getInputs()
+							.then( inputs => {
+								return inputs.map( input => {
+									return {
+										name: input.label,
+										image: input.icon,
+										id: input.id
+									}
+								}).filter( input => {
+									return input.name.toLowerCase().indexOf( query.toLowerCase() ) > -1;
+								})
+							});
+					});
+						
 			});
 		
 		new Homey.FlowCardAction('show_float')
 			.register()
-			.on('run', ( args, state, callback ) => {
+			.registerRunListener( ( args, state ) => {
 				
-				let device = args.tv.getWebOSDevice();
-				if( device instanceof Error ) return callback( device );
-				
-				device.createToast( args.message )
-					.then( res => {
-						callback( null, true );
+				return args.tv
+					.getWebOSDeviceAsync()
+					.then( device => {
+						return device.createToast( args.message );						
 					})
-					.catch( callback );
 				
 			});
 		
