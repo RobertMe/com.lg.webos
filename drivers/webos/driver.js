@@ -35,7 +35,7 @@ class LGWebOSDriver extends Homey.Driver {
 		
 		new Homey.FlowCardAction('set_channel')
 			.register()
-			.registerRunListener('run', ( args, state ) => {
+			.registerRunListener( ( args, state ) => {
 				
 				return args.tv
 					.getWebOSDeviceAsync()
