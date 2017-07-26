@@ -61,7 +61,15 @@ class LGWebOSDevice extends Homey.Device {
 		let signal = this._driver.getWebOSSignal();
 		if( signal instanceof Error ) return Promise.reject( signal );
 		
-		return signal.cmd( ( value ) ? 'power_on' : 'power_off' );
+		return signal.cmd( ( value ) ? 'power_on' : 'power_off' )
+			.then( result => {
+				this.log('cmd', result);
+				return result;
+			})
+			.catch( err => {
+				this.error( 'cmd', err );
+				return err;
+			})
 	}
 	
 	_onCapabilityVolumeSet( value, opts ) {
