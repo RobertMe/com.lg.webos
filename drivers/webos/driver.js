@@ -146,6 +146,9 @@ class LGWebOSDriver extends Homey.Driver {
 				})
 			}
 			
+			if( devicesArr.length === 0 )
+				return callback( new Error( Homey.__('pair_none_found') ) );
+			
 			callback( null, devicesArr );
 			
 		});
