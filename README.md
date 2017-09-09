@@ -15,4 +15,4 @@ Device control allows you to:
 * Power on the TV
 * Power off the TV
 
-Note: Powering the TV on or off is done using Infrared, all other actions are used via Wi-Fi.
+Note: Powering the TV on is done using Infrared, all other actions are used via Wi-Fi.
